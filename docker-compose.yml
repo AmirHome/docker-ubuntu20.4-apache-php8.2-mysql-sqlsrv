@@ -22,9 +22,21 @@ services:
       - ./www:/var/www/html/
     ports:
       - 8000:80
+      - 4430:443
     depends_on:
       # - db-mysql
       - db-mssql
+
+  client:
+    container_name: client
+    build:
+      context: .
+      dockerfile: node.Dockerfile
+    volumes:
+      - ./www/client:/var/www/html/client
+    ports:
+      - 3000:3000
+    command: bash -c "cd /var/www/html/client && yarn install && yarn dev -p 3000"
 
   db-mssql:
     container_name: db-mssql
