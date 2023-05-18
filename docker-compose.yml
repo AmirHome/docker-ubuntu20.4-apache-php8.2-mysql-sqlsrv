@@ -14,26 +14,24 @@ services:
   #   restart: always
   #   command: --default-authentication-plugin=mysql_native_password
 
-  apache:
-    container_name: apache-php8-sqlsrv
+  api:
+    container_name: apache-php82-sqlsrv
     # platform: linux/x86_64
     build: .
     volumes:
       - ./www:/var/www/html/
     ports:
-      - 800:80
+      - 8000:80
     depends_on:
       # - db-mysql
       - db-mssql
-    # networks:
-    #   - testing_net
 
   db-mssql:
     container_name: db-mssql
     # platform: linux/x86_64
     image: mcr.microsoft.com/mssql/server
     ports:
-      - 14330:1433
+      - 1433:1433
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Root@123"
@@ -41,8 +39,3 @@ services:
       MSSQL_PID: "Developer"
     restart: always
     command: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Root@123" -Q "CREATE DATABASE ferah;"
-#     networks:
-#       - testing_net
-
-# networks:
-#   testing_net:
